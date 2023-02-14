@@ -10,10 +10,11 @@
           type="text"
           class="input"
           placeholder="Qual tarefa deseja iniciar ?"
+          v-model="descricao"
         />
       </div>
       <div class="column">
-        <FormularioTemporizador />
+        <FormularioTemporizador @temporizadorFinalizado="finalizarTarefa"/>
       </div>
     </div>
   </div>
@@ -25,8 +26,23 @@ import FormularioTemporizador from "./FormularioTemporizador.vue";
 
 export default defineComponent({
   name: "FormularioVue",
+  emits: ['aoSalvarTarefa'],
   components: {
     FormularioTemporizador,
+  },
+  data() {
+    return {
+      descricao: ''
+    }
+  },
+  methods: {
+    finalizarTarefa(tempoDecorrido: number) : void {
+      this.$emit('aoSalvarTarefa', {
+        duracaoEmSegundos: tempoDecorrido,
+        descricao: this.descricao
+      })
+      this.descricao = '';
+    }
   }
 });
 </script>
